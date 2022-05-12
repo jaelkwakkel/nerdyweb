@@ -1,16 +1,33 @@
 <!-- dit bestand bevat alle code die verbinding maakt met de database -->
 <?php
 
-function connectToDatabase($employee) {
+function connectToDatabase($employee)
+{
     $Connection = null;
 
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // Set MySQLi to throw exceptions
     try {
         if ($employee == 1) {
-            if (rand(0, 1) == 1){
-                $Connection = mysqli_connect("192.168.1.102", "database1", "ICTm2m3", "connectiontest");
-            }else {
-                $Connection = mysqli_connect("192.168.1.100", "database2", "ICTm2m3", "connectiontest");
+            if (rand(0, 1) == 1) {
+                try {
+                    $Connection = mysqli_connect("192.168.1.102", "database1", "ICTm2m3", "connectiontest");
+                } catch (Exception $e) {
+                    try {
+                        $Connection = mysqli_connect("192.168.1.100", "database2", "ICTm2m3", "connectiontest");
+                    } catch (Exception $e) {
+                        $DatabaseAvailable = false;
+                    }
+                }
+            } else {
+                try {
+                    $Connection = mysqli_connect("192.168.1.100", "database2", "ICTm2m3", "connectiontest");
+                } catch (Exception $e) {
+                    try {
+                        $Connection = mysqli_connect("192.168.1.102", "database1", "ICTm2m3", "connectiontest");
+                    } catch (Exception $e) {
+                        $DatabaseAvailable = false;
+                    }
+                }
             }
         } else {
             $Connection = mysqli_connect("localhost", "nerdygadgets_user", "iT6gA6aL0cK0qL5o", "nerdygadgets");
@@ -28,7 +45,8 @@ function connectToDatabase($employee) {
     return $Connection;
 }
 
-function getHeaderStockGroups($databaseConnection) {
+function getHeaderStockGroups($databaseConnection)
+{
     $Query = "
                 SELECT StockGroupID, StockGroupName, ImagePath
                 FROM stockgroups 
@@ -43,7 +61,8 @@ function getHeaderStockGroups($databaseConnection) {
     return $HeaderStockGroups;
 }
 
-function getStockGroups($databaseConnection) {
+function getStockGroups($databaseConnection)
+{
     $Query = "
             SELECT StockGroupID, StockGroupName, ImagePath
             FROM stockgroups 
@@ -59,7 +78,8 @@ function getStockGroups($databaseConnection) {
     return $StockGroups;
 }
 
-function getAllBrands($databaseConnection) {
+function getAllBrands($databaseConnection)
+{
 
     $Query = "
     SELECT DISTINCT Brand FROM `stockitems` WHERE Brand != '' ";
@@ -70,7 +90,8 @@ function getAllBrands($databaseConnection) {
     return $Allbrands;
 }
 
-function getAllSizes($databaseConnection) {
+function getAllSizes($databaseConnection)
+{
 
     $Query = "
     SELECT DISTINCT Size FROM `stockitems` WHERE Size != '' ";
@@ -81,7 +102,8 @@ function getAllSizes($databaseConnection) {
     return $Allsizes;
 }
 
-function getStockItem($id, $databaseConnection) {
+function getStockItem($id, $databaseConnection)
+{
     $Result = null;
 
     $Query = " 
@@ -110,7 +132,8 @@ function getStockItem($id, $databaseConnection) {
     return $Result;
 }
 
-function getStockItemImage($id, $databaseConnection) {
+function getStockItemImage($id, $databaseConnection)
+{
 
     $Query = "
                 SELECT ImagePath
@@ -139,15 +162,16 @@ function getStockItemTemperature($databaseConnection)
     mysqli_stmt_execute($Statement);
     $resultt = mysqli_stmt_get_result($Statement);
 
-    if($resultt && mysqli_num_rows($resultt)==1){
-        $Temperature = mysqli_fetch_all($resultt,MYSQLI_ASSOC)[0];
+    if ($resultt && mysqli_num_rows($resultt) == 1) {
+        $Temperature = mysqli_fetch_all($resultt, MYSQLI_ASSOC)[0];
     }
 
     return $Temperature["Temperature"];
 
 }
 
-function GetVerzendkosten($databaseConnection) {
+function GetVerzendkosten($databaseConnection)
+{
 
     $Query = "
                 SELECT kosten, grens
