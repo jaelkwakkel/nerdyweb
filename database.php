@@ -7,7 +7,7 @@ function connectToDatabase($employee)
 
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // Set MySQLi to throw exceptions
     try {
-        if ($employee == 1) {
+//        if ($employee == 1) {
             if (rand(0, 1) == 1) {
                 try {
                     $Connection = mysqli_connect("192.168.1.102", "database1", "ICTm2m3", "connectiontest");
@@ -29,9 +29,9 @@ function connectToDatabase($employee)
                     }
                 }
             }
-        } else {
-            $Connection = mysqli_connect("localhost", "nerdygadgets_user", "iT6gA6aL0cK0qL5o", "nerdygadgets");
-        }
+//        } else {
+//            $Connection = mysqli_connect("localhost", "nerdygadgets_user", "iT6gA6aL0cK0qL5o", "nerdygadgets");
+//        }
         mysqli_set_charset($Connection, 'latin1');
         $DatabaseAvailable = true;
     } catch (mysqli_sql_exception $e) {
