@@ -7,7 +7,11 @@ function connectToDatabase($employee) {
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // Set MySQLi to throw exceptions
     try {
         if ($employee == 1) {
-            $Connection = mysqli_connect("localhost", "nerdygadgets_employee", "uyCVNNsQg1H*11H@", "nerdygadgets");
+            if (rand(0, 1) == 1){
+                $Connection = mysqli_connect("192.168.1.102", "database1", "ICTm2m3", "connectiontest");
+            }else {
+                $Connection = mysqli_connect("192.168.1.100", "database2", "ICTm2m3", "connectiontest");
+            }
         } else {
             $Connection = mysqli_connect("localhost", "nerdygadgets_user", "iT6gA6aL0cK0qL5o", "nerdygadgets");
         }
